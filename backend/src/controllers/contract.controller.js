@@ -1,10 +1,18 @@
 const { createClient } = require('@supabase/supabase-js');
 const { createCheckoutSession } = require('../services/stripe.service');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || '',
-  process.env.SUPABASE_ANON_KEY || ''
-);
+let supabase;
+if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+  supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+} else {
+  supabase = {
+    from: () => ({
+      select: () => ({ eq: () => ({ single: () => ({ data: null, error: null }) }) }),
+      insert: () => ({ select: () => ({ data: [], error: null }) }),
+      update: () => ({ eq: () => ({ error: null }) }),
+    })
+  };
+}
 
 // POST /contracts
 const createContract = async (req, res) => {

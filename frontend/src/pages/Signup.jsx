@@ -13,7 +13,8 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", formData);
+      const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      await axios.post(`${apiBase}/api/auth/register`, formData);
       navigate("/login");
     } catch (err) {
       setError("Registration failed. Please try again.");

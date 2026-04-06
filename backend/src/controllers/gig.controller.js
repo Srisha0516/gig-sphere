@@ -1,10 +1,18 @@
 const { createClient } = require('@supabase/supabase-js');
 const { rankProposals } = require('../services/ai.service');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || '',
-  process.env.SUPABASE_ANON_KEY || ''
-);
+let supabase;
+if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+  supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+} else {
+  supabase = {
+    from: () => ({
+      select: () => ({ eq: () => ({ single: () => Promise.resolve({ data: null, error: null }) }) }),
+      insert: () => ({ select: () => Promise.resolve({ data: [], error: null }) }),
+      update: () => ({ eq: () => Promise.resolve({ error: null }) }),
+    })
+  };
+}
 
 // POST /gigs
 const createGig = async (req, res) => {

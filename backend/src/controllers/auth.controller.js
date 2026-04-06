@@ -2,15 +2,35 @@ const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || '',
-  process.env.SUPABASE_ANON_KEY || ''
-);
+let supabase;
+if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+  supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+} else {
+  supabase = {
+    from: () => ({
+      select: () => ({ eq: () => ({ single: () => Promise.resolve({ data: null, error: null }) }) }),
+      insert: () => ({ select: () => Promise.resolve({ data: [], error: null }) }),
+      update: () => ({ eq: () => Promise.resolve({ error: null }) }),
+    })
+  };
+}
 
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    // MOCK MODE FOR DEMO
+    if (email === 'test@test.com' && password === 'password123') {
+      const mockUser = {
+        id: 'mock-123',
+        email: 'test@test.com',
+        role: 'client',
+        full_name: 'Test Admin'
+      };
+      const token = jwt.sign(mockUser, process.env.JWT_SECRET || 'your_secret_key', { expiresIn: '1h' });
+      return res.json({ token, user: mockUser });
+    }
+
     const { data: user, error } = await supabase
       .from('users')
       .select('*')

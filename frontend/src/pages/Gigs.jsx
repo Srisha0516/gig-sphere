@@ -12,7 +12,8 @@ export default function Gigs() {
   useEffect(() => {
     const fetchGigs = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/gigs");
+        const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+        const res = await axios.get(`${apiBase}/api/gigs`);
         setGigs(res.data);
       } catch (err) {
         // Mock data fallback for design
