@@ -6,16 +6,17 @@ export default function Cancel() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex h-[80vh] items-center justify-center">
-      <div className="max-w-md w-full bg-[#111111] p-8 rounded-2xl border border-white/10 text-center flex flex-col items-center justify-center space-y-4">
-        <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center">
-          <XCircle className="w-10 h-10 text-red-500" />
+    <div className="content" style={{ display: 'flex', height: '80vh', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="card animate-fade-in" style={{ maxWidth: '420px', width: '100%', padding: '40px', textAlign: 'center' }}>
+        <div style={{ width: '64px', height: '64px', background: 'rgba(255,71,87,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+          <XCircle size={32} style={{ color: 'var(--red)' }} />
         </div>
-        <h2 className="text-2xl font-bold text-white">Payment Cancelled</h2>
-        <p className="text-gray-400 text-sm">You have cancelled the checkout process. No charges were made.</p>
-        <button 
+        <h2 style={{ fontSize: '22px', fontWeight: '800', marginBottom: '8px' }}>Payment Cancelled</h2>
+        <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '24px' }}>You have cancelled the checkout process. No charges were made.</p>
+        <button
           onClick={() => navigate('/')}
-          className="mt-6 px-6 py-3 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/5 transition-colors"
+          className="btn btn-ghost"
+          style={{ width: '100%', padding: '12px' }}
         >
           Return to Dashboard
         </button>

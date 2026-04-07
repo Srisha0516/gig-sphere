@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import { loginUser } from "../services/mockApi";
 
 const AuthContext = createContext();
 
@@ -10,15 +10,17 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch {
+        localStorage.removeItem("user");
+      }
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
-    const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-    const res = await axios.post(`${apiBase}/api/auth/login`, { email, password });
-    const { token, user: userData } = res.data;
+    const { token, user: userData } = await loginUser({ email, password });
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);

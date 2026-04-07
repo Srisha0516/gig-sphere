@@ -1,28 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import io from "socket.io-client";
 import { useAuth } from "../context/AuthContext";
 import { Send, User, MoreVertical, Paperclip, Smile } from "lucide-react";
-
-const apiBase = "https://wild-frogs-read.loca.lt";
-const socket = io(apiBase);
 
 export default function Chat() {
   const { contractId } = useParams();
   const { user } = useAuth();
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { senderId: 'bot', senderName: 'GigSphere AI', content: 'Welcome to your project chat! Messages are stored locally for this demo.', time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+  ]);
   const [input, setInput] = useState("");
   const scrollRef = useRef();
-
-  useEffect(() => {
-    socket.emit("join_contract", contractId);
-
-    socket.on("receive_message", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-
-    return () => socket.off("receive_message");
-  }, [contractId]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -40,9 +28,27 @@ export default function Chat() {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    socket.emit("send_message", msgData);
     setMessages((prev) => [...prev, msgData]);
     setInput("");
+
+    // Simulate bot response
+    setTimeout(() => {
+      setMessages((prev) => [...prev, {
+        senderId: 'bot',
+        senderName: 'GigSphere AI',
+        content: getAIResponse(input),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }]);
+    }, 1000);
+  };
+
+  const getAIResponse = (msg) => {
+    const lower = msg.toLowerCase();
+    if (lower.includes('hello') || lower.includes('hi')) return 'Hello! How can I help with your project today?';
+    if (lower.includes('deadline') || lower.includes('when')) return 'The typical project timeline is 2-4 weeks depending on complexity. Let\'s discuss your specific requirements!';
+    if (lower.includes('price') || lower.includes('cost') || lower.includes('budget')) return 'Pricing depends on project scope. I\'d recommend posting a gig with your budget range to attract the right freelancers.';
+    if (lower.includes('thank')) return 'You\'re welcome! Don\'t hesitate to reach out if you need anything else.';
+    return 'Thanks for your message! Our AI matching system can help connect you with the perfect freelancer for your needs. Try browsing the Gigs page!';
   };
 
   return (
@@ -54,7 +60,7 @@ export default function Chat() {
               <User size={24} />
             </div>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: '700' }}>Contract Discussion</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: '700' }}>Project Discussion</h3>
               <p style={{ fontSize: '12px', color: 'var(--accent3)', fontWeight: '600' }}>● ONLINE</p>
             </div>
           </div>
@@ -64,15 +70,10 @@ export default function Chat() {
         </div>
 
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', background: 'rgba(255,255,255,0.01)' }}>
-          {messages.length === 0 && (
-            <div style={{ textAlign: 'center', marginTop: '40px', color: 'var(--muted)' }}>
-              <p style={{ fontSize: '14px' }}>No messages yet. Start the conversation!</p>
-            </div>
-          )}
           {messages.map((m, i) => (
-            <div 
-              key={i} 
-              style={{ 
+            <div
+              key={i}
+              style={{
                 alignSelf: m.senderId === user.id ? 'flex-end' : 'flex-start',
                 maxWidth: '70%',
                 display: 'flex',
@@ -81,7 +82,7 @@ export default function Chat() {
                 alignItems: m.senderId === user.id ? 'flex-end' : 'flex-start'
               }}
             >
-              <div style={{ 
+              <div style={{
                 background: m.senderId === user.id ? 'var(--accent)' : 'var(--bg3)',
                 color: m.senderId === user.id ? '#000' : 'var(--text)',
                 padding: '12px 18px',
@@ -94,7 +95,7 @@ export default function Chat() {
                 {m.content}
               </div>
               <div style={{ fontSize: '10px', color: 'var(--muted2)', fontWeight: '600', fontFamily: 'var(--font-mono)' }}>
-                 {m.senderName} · {m.time}
+                {m.senderName} · {m.time}
               </div>
             </div>
           ))}
@@ -105,20 +106,20 @@ export default function Chat() {
           <form onSubmit={sendMessage} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             <button type="button" className="btn btn-ghost" style={{ padding: '10px', color: 'var(--muted)' }}><Paperclip size={20} /></button>
             <div style={{ position: 'relative', flex: 1 }}>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message here..." 
-                style={{ 
-                  width: '100%', 
-                  background: 'var(--bg3)', 
-                  border: '1px solid var(--border)', 
-                  borderRadius: '12px', 
-                  padding: '12px 16px 12px 16px',
+                placeholder="Type your message here..."
+                style={{
+                  width: '100%',
+                  background: 'var(--bg3)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '12px',
+                  padding: '12px 16px',
                   color: 'var(--text)',
                   fontSize: '14px'
-                }} 
+                }}
               />
               <button type="button" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)' }}><Smile size={20} /></button>
             </div>

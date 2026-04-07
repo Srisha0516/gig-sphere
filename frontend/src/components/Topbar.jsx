@@ -35,7 +35,7 @@ export default function Topbar() {
             <div style={{ fontSize: '14px', fontWeight: '600' }}>{user?.full_name}</div>
             <div style={{ fontSize: '12px', color: 'var(--muted)', textTransform: 'capitalize' }}>{user?.role}</div>
           </div>
-          <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--accent)', color: '#000', display: 'flex', alignItems: 'center', justifyHeight: 'center', fontWeight: '700' }}>
+          <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--accent)', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700' }}>
             {user?.full_name?.charAt(0)}
           </div>
         </div>
