@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import { useAuth } from "../context/AuthContext";
 import { Send, User, MoreVertical, Paperclip, Smile } from "lucide-react";
 
-const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const socket = io(apiBase);
 
 export default function Chat() {
