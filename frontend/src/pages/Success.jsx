@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import '../index.css';
@@ -17,7 +17,7 @@ export default function Success() {
 
     const verify = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/payments/verify`, {
+        const response = await fetch(`https://wild-frogs-read.loca.lt/api/payments/verify`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

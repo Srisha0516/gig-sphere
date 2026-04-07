@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Star, User, Calendar, Award, ArrowLeft, Loader2 } from 'lucide-react';
@@ -12,7 +12,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/${id}`);
+        const response = await axios.get(`https://wild-frogs-read.loca.lt/api/users/${id}`);
         setProfile(response.data);
       } catch (error) {
         console.error('Failed to fetch profile', error);
