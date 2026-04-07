@@ -41,10 +41,16 @@ app.use(express.json());
 const authRoutes = require('./routes/auth.routes');
 const gigRoutes = require('./routes/gig.routes');
 const contractRoutes = require('./routes/contract.routes');
+const userRoutes = require('./routes/user.routes');
+const paymentRoutes = require('./routes/payment.routes');
+const reviewRoutes = require('./routes/review.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/gigs', gigRoutes);
 app.use('/api/contracts', contractRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'GigSphere API is running' });

@@ -14,9 +14,9 @@ Open your **PowerShell** in the root directory and type:
 > [!TIP]
 > This script will automatically initialize your GitHub, push your code, and launch the Vercel deployment. It will guide you to provide your GitHub username. 
 
-## 🔗 Proper Vercel Setup (Automatic)
-Your frontend is fully optimized with `vercel.json` and a dynamic `VITE_API_BASE_URL`.
-When the script runs, it will ask for your Vercel login. Your final **Network Link** will look like this: `https://gig-sphere-three.vercel.app`
+## 🔗 Your Live Production Link
+Your proper network link is now live:
+**[https://gig-sphere-pll2zk1nn-srisha0516s-projects.vercel.app](https://gig-sphere-pll2zk1nn-srisha0516s-projects.vercel.app)**
 
 ## 🛠 Database Initialization
 1.  **Paste and Run** the content of [schema.sql](file:///c:/Users/Bhumika/OneDrive/Desktop/FCA/backend/schema.sql) into your [Supabase SQL Editor](https://supabase.com/dashboard/project/_/sql).

@@ -61,4 +61,22 @@ const checkout = async (req, res) => {
   }
 };
 
-module.exports = { createContract, checkout };
+// PUT /contracts/:id/complete
+const completeContract = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { data, error } = await supabase.from('contracts').update({ status: 'completed' }).eq('id', id).select();
+    if (error) return res.status(400).json(error);
+    
+    // Attempt to update gig status as well if needed, but not strictly required
+    if (data && data[0]) {
+      await supabase.from('gigs').update({ status: 'closed' }).eq('id', data[0].gig_id);
+    }
+    
+    res.json({ message: 'Contract completed successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = { createContract, checkout, completeContract };
