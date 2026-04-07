@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { apiFetch } from '../utils/api';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import '../index.css';
 

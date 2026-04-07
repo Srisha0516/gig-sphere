@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { apiFetch } from '../utils/api';
+import axios from 'axios';
 import { Star, User, Calendar, Award, ArrowLeft, Loader2 } from 'lucide-react';
 
 export default function Profile() {
@@ -12,8 +12,8 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const data = await apiFetch(`/users/${id}`);
-        setProfile(data);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/${id}`);
+        setProfile(response.data);
       } catch (error) {
         console.error('Failed to fetch profile', error);
       } finally {
